@@ -1,8 +1,9 @@
 from flask import Flask
 from flask_cors import CORS
 import os
-from .db import db, migrate
+from app.db import db, migrate
 from app.models.card import Card
+from app.routes.board_route import board_bp
 from app.routes.card_routes import bp as cards_bp
 # Import models, blueprints, and anything else needed to set up the app or database
 
@@ -20,7 +21,8 @@ def create_app(config=None):
     db.init_app(app)
     migrate.init_app(app, db)
 
-    # Register Blueprints 
+    # Register Blueprints
+    app.register_blueprint(board_bp)
     app.register_blueprint(cards_bp)
 
     CORS(app)
