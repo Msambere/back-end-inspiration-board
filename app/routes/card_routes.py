@@ -54,3 +54,14 @@ def card_likes(card_id):
     }
     
     return card_response, 200
+
+@bp.delete("/<card_id>")
+def delete_one_card(card_id):
+    card = validate_model(Card, card_id)
+
+    db.session.delete(card)
+    db.session.commit()
+
+    return {
+        "details": f'Card {card_id} with description "{card.text}" successfully deleted'
+    }
