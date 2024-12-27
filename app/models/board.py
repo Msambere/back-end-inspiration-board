@@ -4,10 +4,11 @@ from app import db
 class Board(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(nullable=False)
+    owner: Mapped[str] = mapped_column(nullable=False)
     cards = relationship('Card', back_populates='board', cascade='all, delete-orphan')
 
     def to_dict(self):
-        result = {"id": self.id, "title": self.title, "cards": self.cards}
+        result = {"id": self.id, "title": self.title, "cards": self.cards, "owner": self.owner}
         cards = []
         for card in self.cards:
             cards.append(card.to_dict())
@@ -21,5 +22,6 @@ class Board(db.Model):
             cards = board_data.get("cards")
         return cls(
             title=board_data.get("title"),
+            owner=board_data.get("owner"),
             cards=cards
         )
