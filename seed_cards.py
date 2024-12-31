@@ -4,9 +4,6 @@ from app.models.board import Board
 
 my_app = create_app()
 with my_app.app_context():
-    db.session.add(Board(title="Greetings", owner="World"))
-    db.session.add(Board(title="Fruits", owner="Supermarket"))
-    db.session.add(Board(title="Colors", owner="Rainbow"))
 
     db.session.add(Card(board_id=1, text="hola", likes="0"))
     db.session.add(Card(board_id=1, text="hi", likes="0"))
@@ -23,5 +20,10 @@ with my_app.app_context():
     db.session.add(Card(board_id=3, text="blue", likes="0"))
     db.session.add(Card(board_id=3, text="green", likes="0"))
     db.session.add(Card(board_id=3, text="yellow", likes="0"))
-    
+
+    db.session.add(Card.from_dict({"board_id": 4, "text": 'We got this!', "likes": 100 }))
+    db.session.add(Card.from_dict({"board_id": 4, "text": 'We can do it!', "likes": 200}))
+    db.session.add(Card.from_dict({"board_id": 4, "text": 'We are fullstack SWEs!', "likes": 300}))
+    db.session.add(Card.from_dict({"board_id": 4, "text": 'Mood Board baddies for the W!', "likes": 500}))
+  
     db.session.commit()

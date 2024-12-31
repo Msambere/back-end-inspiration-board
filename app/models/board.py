@@ -10,13 +10,13 @@ class Board(db.Model):
     # cards = relationship('Card', back_populates='board', cascade='all, delete-orphan')
 
     def to_dict(self):
-        # cards = []
-        # for card in self.cards:
-        #     cards.append(card.to_dict())
+        cards = []
+        for card in self.cards:
+            cards.append(card.to_dict())
         result = {
             "id": self.id, 
             "title": self.title, 
-            "cards": len(self.cards),
+            "cards": cards,
             "owner": self.owner
             }
         return result
