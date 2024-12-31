@@ -5,14 +5,20 @@ class Board(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(nullable=False)
     owner: Mapped[str] = mapped_column(nullable=False)
-    cards = relationship('Card', back_populates='board', cascade='all, delete-orphan')
+    cards: Mapped[list["Card"]] = relationship(back_populates="board")
+
+    # cards = relationship('Card', back_populates='board', cascade='all, delete-orphan')
 
     def to_dict(self):
-        result = {"id": self.id, "title": self.title, "cards": self.cards, "owner": self.owner}
         cards = []
         for card in self.cards:
             cards.append(card.to_dict())
-            result["cards"] = cards
+        result = {
+            "id": self.id, 
+            "title": self.title, 
+            "cards": cards,
+            "owner": self.owner
+            }
         return result
 
     @classmethod
@@ -25,3 +31,6 @@ class Board(db.Model):
             owner=board_data.get("owner"),
             cards=cards
         )
+    @classmethod
+    def attr_list(cls):
+        return ["title", "owner"]

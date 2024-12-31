@@ -1,13 +1,17 @@
 from flask import abort, make_response
 from ..db import db
 
-def create_model(cls, model_data):
-    try:
-        new_model = cls.from_dict(model_data)
-    except KeyError as e:
-        response = {"details": f"Invalid request: missing {e.args[0]}"}
-        abort(make_response(response, 400))
-
+def create_model(cls, model_data): 
+    class_attributes = cls.attr_list()
+        
+    for attribute in class_attributes:
+        try:
+            attribute = model_data[attribute]
+        except KeyError as error:
+            response = {"details": f"Invalid request: missing {error.args[0]}"}
+            abort(make_response(response, 400))
+            
+    new_model = cls.from_dict(model_data)
     db.session.add(new_model)
     db.session.commit()
 

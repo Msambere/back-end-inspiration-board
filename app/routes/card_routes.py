@@ -5,16 +5,16 @@ from .routes_utilities import create_model, validate_model
 
 bp = Blueprint("bp", __name__, url_prefix="/cards")
 
-@bp.post("")
-def create_card():
-    response_data = request.get_json()
+# @bp.post("")
+# def create_card():
+#     response_data = request.get_json()
 
-    if not response_data.get("text"):
-        abort(make_response({"details": "Invalid data"}, 400))
+#     if not response_data.get("text"):
+#         abort(make_response({"details": "Invalid data"}, 400))
     
-    return {
-        "card": create_model(Card, response_data)
-    }, 201
+#     return {
+#         "card": create_model(Card, response_data)
+#     }, 201
 
 @bp.get("")
 def get_all_cards():
@@ -23,7 +23,7 @@ def get_all_cards():
     cards_response = [card.to_dict() for card in cards]
     return cards_response
 
-@bp.put("/<card_id>")
+@bp.patch("/<card_id>")
 def update_one_card(card_id):
     card = validate_model(Card, card_id)
     response_body = request.get_json()
@@ -39,14 +39,13 @@ def update_one_card(card_id):
 
 @bp.patch("/<card_id>/likes")
 def card_likes(card_id):
-    try:
-        card = validate_model(Card, card_id)
-    except ValueError:
-        abort(make_response({"message": f"Card with {card_id} is invalid"}, 400))
+    card = validate_model(Card, card_id)
+    # try:
+    #     card = validate_model(Card, card_id)
+    # except ValueError:
+    #     abort(make_response({"message": f"Card with {card_id} is invalid"}, 400))
 
     card.likes += 1
-
-    db.session.add(card)
     db.session.commit()
 
     card_response = {
@@ -63,5 +62,5 @@ def delete_one_card(card_id):
     db.session.commit()
 
     return {
-        "details": f'Card {card_id} with description "{card.text}" successfully deleted'
+        "details": f'Card {card_id} with text "{card.text}" successfully deleted'
     }
