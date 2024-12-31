@@ -7,7 +7,7 @@ from app.routes.routes_utilities import validate_model, create_model
 bp = Blueprint("board_bp", __name__,url_prefix="/boards")
 
 
-@bp.post("")
+@bp.post("/")
 def create_board():
     response_data = request.get_json()
     # if not response_data.get("title"):
@@ -25,7 +25,7 @@ def create_card_with_board(board_id):
     request_body["board_id"] = board.id
     return {"card": create_model(Card, request_body)}, 201
 
-@bp.get("")
+@bp.get("/")
 def get_all_boards():
     title_param = request.args.get("title")
 
