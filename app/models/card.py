@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, Integer
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from ..db import db
 
@@ -6,8 +6,6 @@ class Card(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     text: Mapped[str] = mapped_column(nullable=False)
     likes: Mapped[int] = mapped_column(default=0)
-    # board_id = db.Column(Integer, ForeignKey('board.id'), nullable=True)
-    # board = relationship('Board', back_populates='cards')
     board_id: Mapped[int] = mapped_column(ForeignKey("board.id"))
     board: Mapped["Board"] = relationship(back_populates="cards")
 

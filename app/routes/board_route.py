@@ -7,11 +7,9 @@ from app.routes.routes_utilities import validate_model, create_model
 bp = Blueprint("board_bp", __name__,url_prefix="/boards")
 
 
-@bp.post("/")
+@bp.post("")
 def create_board():
     response_data = request.get_json()
-    # if not response_data.get("title"):
-    #     abort(make_response({"details": "Invalid data"}, 400))
     new_board = create_model(Board, response_data)
     response = {
             "board": new_board
@@ -25,7 +23,7 @@ def create_card_with_board(board_id):
     request_body["board_id"] = board.id
     return {"card": create_model(Card, request_body)}, 201
 
-@bp.get("/")
+@bp.get("")
 def get_all_boards():
     title_param = request.args.get("title")
 
@@ -39,24 +37,11 @@ def get_all_boards():
 @bp.get("/<board_id>")
 def get_one_board(board_id):
     board = validate_model(Board, board_id)
-    # query = db.select(Board).where(Board.id == board_id)
-    # board = db.session.scalar(query)
-
-    # if not board:
-    #     response = {"message": f"{board_id} not found"}
-    #     abort(make_response(response, 404))
-
     return {"board": board.to_dict()}
 
 @bp.get("/<board_id>/cards")
 def get_all_cards_for_specific_board(board_id):
     board = validate_model(Board, board_id)
-    # query = db.select(Board).where(Board.id == board_id)
-    # board = db.session.scalar(query)
-
-    # if not board:
-    #     response = {"message": f"{board_id} not found"}
-    #     abort(make_response(response, 404))
     
     cards =[]
     for card in board.cards:
@@ -68,11 +53,7 @@ def get_all_cards_for_specific_board(board_id):
 @bp.patch("/<board_id>")
 def update_board(board_id):
     board = validate_model(Board, board_id)
-    # query = db.select(Board).where(Board.id == board_id)
-    # board = db.session.scalar(query)
-
-    # if board is None:
-    #     abort(make_response({"message": f"Board {board_id} not found"}, 404))
+ 
     request_body = request.get_json()
     if "title" in request_body:
         board.title = request_body["title"]
@@ -86,11 +67,6 @@ def update_board(board_id):
 @bp.delete("/<board_id>")
 def delete_board(board_id):
     board = validate_model(Board, board_id)
-    # query = db.select(Board).where(Board.id == board_id)
-    # board = db.session.scalar(query)
-    # if not board:
-    #     response = {"message": f"{board_id} not found"}
-    #     abort(make_response(response, 404))
 
     db.session.delete(board)
     db.session.commit()

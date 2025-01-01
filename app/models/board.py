@@ -7,8 +7,6 @@ class Board(db.Model):
     owner: Mapped[str] = mapped_column(nullable=False)
     cards: Mapped[list["Card"]] = relationship(back_populates="board")
 
-    # cards = relationship('Card', back_populates='board', cascade='all, delete-orphan')
-
     def to_dict(self):
         cards = []
         for card in self.cards:
