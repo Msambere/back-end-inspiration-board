@@ -39,7 +39,7 @@ def send_model_creation_slack(cls, text):
     header = {"Authorization": f"Bearer {api_key}"}
     request_body = {
         "channel": "C07UJK253A7",
-        "text": f"{cls.__name__} {text} has been created",
+        "text": f"{cls.__name__} \"{text}\" has been created",
     }
 
     return requests.post(url, headers=header, params=request_body)
