@@ -2,7 +2,7 @@ from flask import Blueprint, make_response, abort, request
 from app import db
 from app.models.board import Board
 from app.models.card import Card
-from app.routes.routes_utilities import validate_model, create_model
+from app.routes.routes_utilities import validate_model, create_model, send_model_creation_slack
 
 bp = Blueprint("board_bp", __name__,url_prefix="/boards")
 
@@ -14,6 +14,7 @@ def create_board():
     response = {
             "board": new_board
     }
+    send_model_creation_slack(Board, new_board["title"])
     return response, 201
 
 @bp.post("/<board_id>/cards")
@@ -21,7 +22,9 @@ def create_card_with_board(board_id):
     board = validate_model(Board,board_id)
     request_body = request.get_json()
     request_body["board_id"] = board.id
-    return {"card": create_model(Card, request_body)}, 201
+    new_card = create_model(Card, request_body)
+    send_model_creation_slack(Card, new_card["text"])
+    return {"card": new_card}, 201
 
 @bp.get("")
 def get_all_boards():
