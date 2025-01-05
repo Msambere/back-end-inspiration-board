@@ -38,7 +38,7 @@ def send_model_creation_slack(cls, text):
     api_key = os.environ.get("SLACK_BOT_TOKEN")
     header = {"Authorization": f"Bearer {api_key}"}
     request_body = {
-        "channel": "C07UJK253A7",
+        "channel": os.environ.get("SLACK_CHANNEL_ID"),
         "text": f"{cls.__name__} \"{text}\" has been created",
     }
 
