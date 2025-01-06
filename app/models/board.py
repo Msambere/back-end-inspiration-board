@@ -5,7 +5,7 @@ class Board(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(nullable=False)
     owner: Mapped[str] = mapped_column(nullable=False)
-    cards: Mapped[list["Card"]] = relationship(back_populates="board")
+    cards: Mapped[list["Card"]] = relationship(back_populates="board", cascade="all, delete-orphan")
 
     def to_dict(self):
         cards = []
