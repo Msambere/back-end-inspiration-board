@@ -12,9 +12,6 @@ def test_get_all_cards_with_no_records(client):
     assert response.status_code == 200
     assert response_body == []
 
-
-    
-# ---- Post Method Tests ----
 # ---- Upgrade Method Tests ----
 def test_patch_likes(client, two_saved_boards, two_saved_cards):
     # Act

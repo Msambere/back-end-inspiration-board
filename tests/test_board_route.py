@@ -92,7 +92,6 @@ def test_create_one_board(client):
         }
     }
     
-# @pytest.mark.skip(reason="Weird test error from flask")
 def test_create_one_board_missing_title(client):
     # Act
     response = client.post("/boards", json={
@@ -104,7 +103,6 @@ def test_create_one_board_missing_title(client):
     assert response.status_code == 400
     assert response_body == {"details": "Invalid request: missing title"}
 
-# @pytest.mark.skip(reason="Weird test error from flask")
 def test_create_one_board_missing_owner(client):
     # Act
     response = client.post("/boards", json={
